@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UALR PROJECT</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <!-- <script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/"; -->
+    <!-- // ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];</script> -->
+</head>
+
+<body>
+    <!-- remove zing watermark -->
+    <style>
+        #boxshadow {
+            position: relative;
+            box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+            background: white;
+        }
+
+        #boxshadow::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            /* hide shadow behind image */
+            -webkit-box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+            -moz-box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+            width: 70%;
+            left: 15%;
+            /* one half of the remaining 30% */
+            height: 100px;
+            bottom: 0;
+        }
+
+        div[id$="myChart_chord-license-text"] {
+            display: none !important;
+        }
+
+        div[id$="myChart_line-license-text"] {
+            display: none !important;
+        }
+
+        div[id$="myChart_word-license-text"] {
+            display: none !important;
+        }
+
+        div[id$="myChart_scatter-license-text"] {
+            display: none !important;
+        }
+
+        /* .canvasjs-chart-credit {
+         display: none !important;
+         } */
+    </style>
+    <div class="container" style="padding-top:100px; padding-bottom:100px;">
+        <div>
+            <div class="row">
+                <div class="col-md-3 col-sm-3 card w3-border w3-round-xlarge" style="margin-bottom: 20px; margin-right: 20px; box-shadow: -2px 2px #8080804f;">
+                    <div class="panel panel-primary">
+                        </br>
+                        <div>
+                            <strong>Topics</strong>
+                        </div>
+                        </br>
+                        <input class="form-control" id="myInput" type="text" placeholder="Search">
+                        <br>
+                        <ul class="list-group" id="myList" style="max-height: 370px; overflow: scroll;  ">
+                            <a href="#">
+                                <li id="t1" class="list-group-item">Topic 1</li>
+                            </a>
+                            <a href="#">
+                                <li id="t2" class="list-group-item">Topic 2</li>
+                            </a>
+                            <a href="#">
+                                <li id="t3" class="list-group-item">Topic 3</li>
+                            </a>
+                            <a href="#">
+                                <li id="t4" class="list-group-item">Topic 4</li>
+                            </a>
+                            <a href="#">
+                                <li id="t5" class="list-group-item">Topic 5</li>
+                            </a>
+                            <a href="#">
+                                <li id="t6" class="list-group-item">Topic 6</li>
+                            </a>
+                            <a href="#">
+                                <li id="t7" class="list-group-item">Topic 7</li>
+                            </a>
+                            <a href="#">
+                                <li id="t8" class="list-group-item">Topic 8</li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-12" style="margin-bottom: 20px;">
+                    <div class="row h-300">
+                        <div class="col-md-12 col-lg-12 B h-50 pb-3 card w3-border w3-round-xlarge" style="box-shadow: -2px 2px #8080804f;">
+                            <div class="panel">
+                                <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div> -->
+                                <div class="" id="myChart_line" style="height: 370px; width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="w3-border w3-round-xlarge w3-panel w3-border-red w3-pale-red"></div> -->
+                    <div class="card w3-border w3-round-xlarge" style="margin-top: 20px; box-shadow: -2px 2px #8080804f;">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6>
+                                    <strong>Blog Distribution</strong>
+                                    <br>
+                                    <h3 id="distribution">95%</h3>
+                                    </br>
+                                </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>
+                                    <strong>Bloggers Mentioned</strong>
+                                    <br>
+                                    <h3 id="b_mentioned">20</h3>
+                                    </br>
+                                </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>
+                                    <strong>Posts Mentioned</strong>
+                                    <br>
+                                    <h3 id="p_mentioned" >400</h3>
+                                    </br>
+                                </h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>
+                                    <strong style=" font-size: 14px;">The Posting Location</strong>
+                                    <br>
+                                    <h3 id="posting_loc" style=" font-size: 26px;">United States</h3>
+                                    </br>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 col-md-4 card " style="margin-top: 20px; margin-right: 20px;box-shadow: -2px 2px #8080804f;">
+                    <br>
+                    <div>Keywords from
+                        <a id="word" href="#"></a> of Past
+                        <strong>Week</strong>
+                    </div>
+                    <div class="" id="myChart_word" style="height: 370px; width: 100%;"></div>
+                </div>
+                <div class="col-sm-4 col-md-4 card" style="margin-top: 20px; margin-right: 20px;box-shadow: -2px 2px #8080804f;">
+                    <br>
+                    <div>
+                        <a id="chord" href="#"></a> Overlap of Past
+                        <strong>Week</strong>
+                    </div>
+                    <div class="" id="myChart_chord" style="height: 370px; width: 100%;"></div>
+                </div>
+                <div class="col-sm-3 col-md-3 card" style="margin-top: 20px; box-shadow: -2px 2px #8080804f;">
+                    <br>
+                    <div>Posts from
+                        <a id="scatter" href="#"></a> of Past
+                        <strong>Week</strong>
+                    </div>
+                    <div class="" id="myChart_scatter" style="height: 370px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="TOPICS.js"></script>
+    <script>
+        console.log("topics",topics);
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myList li").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            innerText = document.getElementById("word").innerText = "Topic 1";
+            innerText = document.getElementById("chord").innerText = "Topic 1";
+            innerText = document.getElementById("scatter").innerText = "Topic 1";
+
+            $("li").on("click", function c(j) {
+                document.getElementById("word").innerText = document.getElementById("chord").innerText=document.getElementById("scatter").innerText= document.getElementById(this.id).innerText;
+                // document.getElementById("distribution").innerText = document.getElementById(this.id).innerText;
+                // document.getElementById("scatter").innerText = document.getElementById(this.id).innerText;
+            });
+            // function findata(topic_name) {
+                $("li").on("click", function c() {
+                    Object.keys(topics).map(topic =>{
+                        if (topic===document.getElementById(this.id).innerText){
+                            myConfig["series"]=topics[topic][0]["data"]["chord"]
+                            myConfig3.text=topics[topic][0]["data"]["word"]
+                            myConfig4["series"]=topics[topic][0]["data"]["scatter"]
+
+                            document.getElementById("distribution").innerText=topics[topic][0]["properties"]["Blog distribution"]
+                            document.getElementById("b_mentioned").innerText=topics[topic][0]["properties"]["Bloggers mentioned"]
+                            document.getElementById("p_mentioned").innerText=topics[topic][0]["properties"]["Posts mentioned"]
+                            document.getElementById("posting_loc").innerText=topics[topic][0]["properties"]["Posting Location"]
+
+                            rerender(myConfig)
+                            rerender3(myConfig3)
+                            rerender4(myConfig4)
+                            console.log(myConfig)
+
+                        }
+                    })
+                    // if (condition) {
+                        
+                    // }
+                 
+            });
+            // }document.getElementById(this.id).innerText;
+
+
+        });
+    </script>
+    <script>
+        var myConfig = {
+            "type": "chord",
+            "options": {
+                "radius": "80%",
+                "color-type": "palette",
+                "palette": [ "grey", "pink", "green", "blue"]
+            },
+            "plotarea": {
+                "margin": "dynamic"
+                
+            },
+            
+            "series": [
+                {
+                    "values": [6637, 5700, 4789, 2771],
+                    "text": "NIGERIA"
+                },
+                {
+                    "values": [7737, 2691, 2202, 7006],
+                    "text": "GHANA"
+                },
+                {
+                    "values": [8574, 9898, 4084, 1765],
+                    "text": "IVORY COAST"
+                },
+                {
+                    "values": [857, 9876, 408, 1789],
+                    "text": "UGANDA"
+                },
+                {
+                    "values": [5309, 1602, 8395, 2908],
+                    "text": "LIBERIA"
+                }
+            ]
+        };
+        function rerender(data){
+         zingchart.render({
+            id: 'myChart_chord',
+            data: data,
+            height: "100%",
+            width: "100%",
+            hideprogresslogo: true
+        });
+        
+        }
+        rerender(myConfig);
+
+        var myConfig2 = {
+            "globals": {
+                "font-family": "Roboto"
+            },
+            "graphset": [
+                {
+                    "type": "area",
+                    "background-color": "#fff",
+                    "utc": true,
+                    "title": {
+                        "y": "15px",
+                        "text": "Topic Trends of Past Week",
+                        "background-color": "none",
+                        "font-color": "#05636c",
+                        "font-size": "15px",
+                        "height": "25px",
+                        "adjust-layout": true,
+                        "textAlign": "left"
+                    },
+                    "plotarea": {
+                        "margin-top": "10%",
+                        "margin-right": "dynamic",
+                        "margin-bottom": "dynamic",
+                        "margin-left": "dynamic",
+                        "adjust-layout": false
+                    },
+                    // "labels": [
+                    //     {
+                    //         "text": "Visitors: %plot-2-value",
+                    //         "default-value": "",
+                    //         "color": "#8da0cb",
+                    //         "x": "20%",
+                    //         "y": 50,
+                    //         "width": 120,
+                    //         "text-align": "left",
+                    //         "bold": 0,
+                    //         "font-size": "14px",
+                    //         "font-weight": "bold"
+                    //     },
+                    //     {
+                    //         "text": "Clicks: %plot-1-value",
+                    //         "default-value": "",
+                    //         "color": "#66c2a5",
+                    //         "x": "45%",
+                    //         "y": 50,
+                    //         "width": 120,
+                    //         "text-align": "left",
+                    //         "bold": 0,
+                    //         "font-size": "14px",
+                    //         "font-weight": "bold"
+                    //     },
+                    //     {
+                    //         "text": "Returns: %plot-0-value",
+                    //         "default-value": "",
+                    //         "color": "#fc8d62",
+                    //         "x": "70%",
+                    //         "y": 50,
+                    //         "width": 120,
+                    //         "text-align": "left",
+                    //         "bold": 0,
+                    //         "font-size": "14px",
+                    //         "font-weight": "bold"
+                    //     }
+                    // ],
+                    // "scale-x": {
+                    //     // "label": 
+                    //     // {
+                    //     //     "text": "Date Range",
+                    //     //     "font-size": "14px",
+                    //     //     "font-weight": "normal",
+                    //     //     "offset-x": "10%",
+                    //     //     "font-angle": 360
+                    //     // },
+                    //     "item": {
+                    //         "text-align": "center",
+                    //         "font-color": "#05636c"
+                    //     },
+                    //     "zooming": 1,
+                    //     "max-labels": 12,
+                    //     "labels": [
+                    //         "Sept<br>19",
+                    //         "Sept<br>20",
+                    //         "Sept<br>21",
+                    //         "Sept<br>22",
+                    //         "Sept<br>23",
+                    //         "Sept<br>24",
+                    //         "Sept<br>25",
+                    //         "Sept<br>26",
+                    //         "Sept<br>27",
+                    //         "Sept<br>28",
+                    //         "Sept<br>29",
+                    //         "Sept<br>30"
+                    //     ],
+                    //     "max-items": 12,
+                    //     "items-overlap": true,
+                    //     "guide": {
+                    //         "line-width": "0px"
+                    //     },
+                    //     "tick": {
+                    //         "line-width": "2px"
+                    //     },
+                    // },
+                    // "crosshair-x": {
+                    //     "line-color": "#fff",
+                    //     "line-width": 1,
+                    //     "plot-label": {
+                    //         "visible": false
+                    //     }
+                    // },
+                    "scale-y": {
+                        "values": "-40000:80000:40000",
+                        "item": {
+                            "font-color": "#05636c",
+                            "font-weight": "normal"
+                        },
+                        // "label": {
+                        //     "text": "Metrics",
+                        //     "font-size": "14px"
+                        // },
+                        "guide": {
+                            "line-width": "2px",
+                            "alpha": 0.2,
+                        }
+                    },
+                    "plot": {
+                        "line-width": 2,
+                        "marker": {
+                            "size": 1,
+                            "visible": false
+                        },
+                        "tooltip": {
+                            "font-family": "Roboto",
+                            "font-size": "15px",
+                            "text": "There were %v %t on %data-days",
+                            "text-align": "left",
+                            "border-radius": 5,
+                            "padding": 10
+                        }
+                    },
+                    "series": [
+                        {
+                            "values": getrand(-40000, 80000, 12),
+                            "data-days": [
+                                "Sept 19",
+                                "Sept 20",
+                                "Sept 21",
+                                "Sept 22",
+                                "Sept 23",
+                                "Sept 24",
+                                "Sept 25",
+                                "Sept 26",
+                                "Sept 27",
+                                "Sept 28",
+                                "Sept 29",
+                                "Sept 30"
+                            ],
+                            "line-color": "#ffffff",
+                            "aspect": "spline",
+                            "background-color": "blue",
+                            "alpha-area": ".3",
+                            "font-family": "Roboto",
+                            "font-size": "14px",
+                            "text": "on Topic 3"
+                        },
+                        {
+                            "values": getrand(-40000, 80000, 12),
+                            "data-days": [
+                                "Sept 19",
+                                "Sept 20",
+                                "Sept 21",
+                                "Sept 22",
+                                "Sept 23",
+                                "Sept 24",
+                                "Sept 25",
+                                "Sept 26",
+                                "Sept 27",
+                                "Sept 28",
+                                "Sept 29",
+                                "Sept 30"
+                            ],
+                            "line-color": "#ffffff",
+                            "background-color": "grey",
+                            "alpha-area": ".3",
+                            "text": "on Topic 2",
+                            "aspect": "spline",
+                            "font-family": "Roboto",
+                            "font-size": "14px"
+                        },
+                        {
+                            "values": getrand(-40000, 80000, 12),
+                            "data-days": [
+                                "Sept 19",
+                                "Sept 20",
+                                "Sept 21",
+                                "Sept 22",
+                                "Sept 23",
+                                "Sept 24",
+                                "Sept 25",
+                                "Sept 26",
+                                "Sept 27",
+                                "Sept 28",
+                                "Sept 29",
+                                "Sept 30"
+                            ],
+                            "line-color": "#ffffff",
+                            "background-color": "blue",
+                            "aspect": "spline",
+                            "alpha-area": "0.2",
+                            "text": "on Topic 1",
+                            "font-family": "Roboto",
+                            "font-size": "14px"
+                        }
+                    ]
+                }
+            ]
+        };
+        zingchart.render({
+            id: 'myChart_line',
+            data: myConfig2,
+            height: '100%',
+            width: '100%',
+            hideprogresslogo: true,
+        });
+
+
+
+        // var myConfig = {
+        //     "graphset": [
+        //         {
+        //             "type": "wordcloud",
+        //             "options": {
+        //                 "style": {
+        //                     "tooltip": {
+        //                         visible: true,
+        //                         text: '%text: %hits'
+        //                     }
+        //                 },
+        //                 "words": [
+        //                     {
+        //                         "text": "Word 1",
+        //                         "count": "10"
+        //                     },
+        //                     {
+        //                         "text": "Word 2",
+        //                         "count": "8"
+        //                     },
+        //                     {
+        //                         "text": "Word 3",
+        //                         "count": "6"
+        //                     },
+        //                     {
+        //                         "text": "Word 4",
+        //                         "count": "4"
+        //                     },
+        //                     {
+        //                         "text": "Word 5",
+        //                         "count": "1"
+        //                     },
+        //                     {
+        //                         "text": "Word 6",
+        //                         "count": "0"
+        //                     },
+        //                     {
+        //                         "text": "Word 7",
+        //                         "count": "33"
+        //                     },
+        //                     {
+        //                         "text": "Word 8",
+        //                         "count": "7"
+        //                     },
+        //                     {
+        //                         "text": "Word 9",
+        //                         "count": "6"
+        //                     },
+        //                     {
+        //                         "text": "Word 10",
+        //                         "count": "212"
+        //                     }]
+        //             }
+        //         }]
+        // };
+        // zingchart.render({
+        //     id: 'myChart_word',
+        //     data: myConfig,
+        //     height: '100%',
+        //     width: '100%',
+        //     hideprogresslogo: true,
+        // })
+    
+            var myConfig3 = {
+            type: 'wordcloud',
+            options: {
+        //         text: "It is a rare honor in this life to follow one of your heroes.  \
+        // And John Lewis is one of my heroesNow, I have to imagine that when a younger \
+        // John Lewis woke up that morning 50 years ago and made his way to Brown Chapel, \
+        // heroics were not on his mind.  A day like this was not on his mind.  \
+        // Young folks with bedrolls and backpacks were milling about.  Veterans \
+        // of the movement trained newcomers in the tactics of non-violence; the right way to protect yourself when attacked.  \
+        // A doctor described what tear gas does to the body, while marchers scribbled down instructions for contacting their loved ones.  \
+        // The air was thick with doubt, anticipation and fear.  And they comforted themselves with the final verse of the final hymn they sung: \
+        // “No matter what may be the test, God will take care of you; Lean, weary one, upon His breast, God will take care of you.” \
+        // And then, his knapsack stocked with an apple, a toothbrush, and a book on government -- all you need for a night behind bars -- \
+        // John Lewis led them out of the church on a mission to change America. President and Mrs. Bush, Governor Bentley, Mayor Evans, \
+        // Sewell, Reverend Strong, members of Congress, elected officials, foot soldiers, friends, fellow Americans: As John noted, \
+        // there are places and moments in America where this nation’s destiny has been decided.  Many are sites of war -- Concord and Lexington, \
+        // Appomattox, Gettysburg.  Others are sites that symbolize the daring of America’s character -- Independence Hall and Seneca Falls, \
+        // Kitty Hawk and Cape Canaveral. Selma is such a place.  In one afternoon 50 years ago, so much of our turbulent history -- the stain of \
+        // slavery and anguish of civil war; the yoke of segregation and tyranny of Jim Crow; the death of four little girls in Birmingham; \
+        // and the dream of a Baptist preacher -- all that history met on this bridge. It was not a clash of armies, but a clash of wills; a \
+        // contest to determine the true meaning of America.  And because of men and women like John Lewis, Joseph Lowery, Hosea Williams, \
+        // Amelia Boynton, Diane Nash, Ralph Abernathy, C.T. Vivian, Andrew Young, Fred Shuttlesworth, Dr. Martin Luther King, Jr., \
+        // and so many others, the idea of a just America and a fair America, an inclusive America, and a generous America -- that \
+        // idea ultimately triumphed. As is true across the landscape of American history, we cannot examine this moment in isolation",
+        text:"Word1 Word2 Word3 Word4 Word5",
+                // minLength: 5,
+                // ignore: ["America", "American", "Applause", "Because", "because", "could", "don’t", "people", "That’s", "that’s", "Their", "their", "there", "these", "thing", "those", "through", "We’re", "we’re", "where", "would"],
+                maxItems: 40,
+                aspect: 'flow-center',
+                rotate: true,
+                colorType: 'palette',
+                palette: ['blue'],
+
+                style: {
+                    fontFamily: 'Crete Round',
+
+                    hoverState: {
+                        backgroundColor: '#D32F2F',
+                        borderRadius: 2,
+                        fontColor: 'white'
+                    },
+                    tooltip: {
+                        text: '%text: %hits',
+                        visible: true,
+
+                        alpha: 0.9,
+                        backgroundColor: '#1976D2',
+                        borderRadius: 2,
+                        borderColor: 'none',
+                        fontColor: 'white',
+                        fontFamily: 'Georgia',
+                        textAlpha: 1
+                    }
+                }
+            },
+
+            source: {
+                // text: '--President Barack Obama<br> Selma 50th anniversary speech<br>March 7, 2015',
+                //Source: https://obamawhitehouse.archives.gov/the-press-office/2015/03/07/remarks-president-50th-anniversary-selma-montgomery-marches
+                fontColor: '#64B5F6',
+                fontSize: 10,
+                fontFamily: 'Georgia',
+                fontWeight: 'normal',
+                marginBottom: '10%'
+            }
+        };
+
+        function rerender3(data){
+         zingchart.render({
+            id: 'myChart_word', 
+	data: data, 
+	height: 400, 
+    width: '100%',
+    hideprogresslogo: true
+        });
+        
+        }
+        rerender3(myConfig3);
+
+        var myConfig4 = {
+            "type": "scatter",
+            "series": [
+                {
+                    "values": [
+                        [1, 9],
+                        [2, 15],
+                        [3, 21],
+                        [4, 30],
+                        [5, 40],
+                        [6, 59],
+                        [7, 60],
+                        [8, 75],
+                        [9, 81],
+                        [10, 99]
+                    ]
+                },
+                {
+                    "values": [
+                        [0.9, 3],
+                        [2.1, 13],
+                        [3.5, 25],
+                        [4.9, 35],
+                        [5.3, 41],
+                        [6.5, 57],
+                        [7.1, 61],
+                        [8.7, 70],
+                        [9.2, 82],
+                        [9.9, 95]
+                    ]
+                },
+                {
+                    "values": [
+                        [0.1, 9],
+                        [1.8, 21],
+                        [1.9, 29],
+                        [4.1, 33],
+                        [4.5, 39],
+                        [6.9, 51],
+                        [7.4, 64],
+                        [8.9, 70],
+                        [9, 75],
+                        [9.3, 93]
+                    ]
+                },
+                {
+                    "values": [
+                        [0.3, 11],
+                        [0.9, 15],
+                        [1.1, 24],
+                        [2.3, 29],
+                        [2.9, 30],
+                        [3.3, 35],
+                        [5.6, 67],
+                        [6.9, 70],
+                        [7.3, 71],
+                        [8.9, 90]
+                    ]
+                },
+                {
+                    "values": [
+                        [0.5, 5],
+                        [1.9, 5],
+                        [2.5, 10],
+                        [3.1, 30],
+                        [6.5, 45],
+                        [6.9, 74],
+                        [7.2, 50],
+                        [7.8, 56],
+                        [8, 61],
+                        [8.5, 71]
+                    ]
+                }
+            ],
+            scaleY: {
+                lineColor: 'none',
+                tick: {
+                    visible: false
+                },
+                guide: {
+                    visible: false
+                },
+                item: {
+                    visible: false
+                }
+            },
+            scaleX: {
+                visible: false
+            }
+        };
+
+        function rerender4(data){
+         zingchart.render({
+            id: 'myChart_scatter',
+            data: data,
+            height: 400,
+            width: "100%",
+            hideprogresslogo: true,
+        });
+        
+        }
+        rerender4(myConfig4);
+
+
+
+        function getrand(min, max, leng) {
+            var arr = []
+            while (arr.length < leng) {
+                var rand = Math.floor(Math.random() * (max - min)) + min
+                if (arr.indexOf(rand) === -1) arr.push(rand);
+            }
+            return arr;
+        }
+    </script>
+
+
+    <script>
+
+    </script>
+</body>
+
+</html>
